@@ -2,6 +2,8 @@
   "name": "data-structures",
   "version": "0.0.1",
   "scripts": {
+    "pre-commit": "npm-run-all jshint jscs tests",
+    "pre-push": "npm-run-all jshint jscs coverage",
     "tests": "mocha --ui bdd -R spec -t 5000 --recursive tests",
     "coverage": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 --recursive tests",
     "jshint": "node node_modules/jshint/bin/jshint index.js tests linked-lists --config .jshintrc",
@@ -21,8 +23,8 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm-run-all jshint jscs tests",
-      "pre-push": "npm-run-all jshint jscs coverage"
+      "pre-commit": "npm run pre-commit",
+      "pre-push": "npm run pre-push"
     }
   }
 }
