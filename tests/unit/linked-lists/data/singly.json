@@ -1,0 +1,16 @@
+{
+  "defaultValues": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "valuesToAdd": [
+    10,
+    true,
+    {
+      "name": "Ilya"
+    },
+    "test"
+  ]
+}
