@@ -49,7 +49,7 @@ class DoublyLinkedList extends BaseLinkedList {
     addBefore(beforeValue, value) {
         const node = this[_findNode](beforeValue);
 
-        if (node.next) {
+        if (node && node.next) {
             const newNode = new LinkedListItem(value, node, node.prev);
             node.prev.next = newNode;
             node.prev = newNode;
@@ -61,7 +61,7 @@ class DoublyLinkedList extends BaseLinkedList {
     addAfter(afterValue, value) {
         const node = this[_findNode](afterValue);
 
-        if (node.next) {
+        if (node && node.next) {
             const newNode = new LinkedListItem(value, node.next, node);
             node.next.prev = newNode;
             node.next = newNode;
@@ -73,7 +73,7 @@ class DoublyLinkedList extends BaseLinkedList {
     remove(value) {
         const node = this[_findNode](value);
 
-        if (node.next) {
+        if (node && node.next) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
         }
@@ -115,20 +115,6 @@ class DoublyLinkedList extends BaseLinkedList {
         endLimiter.prev = startLimiter;
 
         return this;
-    }
-
-    [_findNode](value) {
-        let node = this[_getStartLimiter]().next;
-
-        while (node.next) {
-            if (_.isEqual(node.value, value)) {
-                break;
-            }
-
-            node = node.next;
-        }
-
-        return node;
     }
 
     [_getEndLimiter]() {

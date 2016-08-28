@@ -20,21 +20,20 @@ class SinglyLinkedList extends BaseLinkedList {
 
     addToTop(value) {
         const limiter = this[_getStartLimiter]();
-        const top = limiter.next;
 
-        limiter.next = new LinkedListItem(value, top);
+        limiter.next = new LinkedListItem(value, limiter.next);
 
         return this;
     }
 
     add(value) {
-        let lastElement = this[_getStartLimiter]();
+        let node = this[_getStartLimiter]();
 
-        while (lastElement.next) {
-            lastElement = lastElement.next;
+        while (node.next) {
+            node = node.next;
         }
 
-        lastElement.next = new LinkedListItem(value);
+        node.next = new LinkedListItem(value);
 
         return this;
     }
@@ -102,34 +101,6 @@ class SinglyLinkedList extends BaseLinkedList {
         limiter.next = null;
 
         return this;
-    }
-
-    [_findNode](value) {
-        let node = this[_getStartLimiter]().next;
-
-        while (node) {
-            if (_.isEqual(node.value, value)) {
-                break;
-            }
-
-            node = node.next;
-        }
-
-        return node;
-    }
-
-    [_findNodeBefore](value) {
-        let node = this[_getStartLimiter]();
-
-        while (node) {
-            if (node.next && _.isEqual(value, node.next.value)) {
-                break;
-            }
-
-            node = node.next;
-        }
-
-        return node;
     }
 
     [_insertDefaultValues](values) {

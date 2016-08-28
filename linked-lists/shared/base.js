@@ -6,6 +6,7 @@ const symbols = require('../shared/symbols');
 const _startLimiter = symbols._startLimiter;
 const _getStartLimiter = symbols._getStartLimiter;
 const _findNode = symbols._findNode;
+const _findNodeBefore = symbols._findNodeBefore;
 
 class BaseLinkedList {
     constructor(LinkedListItem) {
@@ -20,6 +21,34 @@ class BaseLinkedList {
         }
 
         return this;
+    }
+
+    [_findNode](value) {
+        let node = this[_getStartLimiter]().next;
+
+        while (node) {
+            if (_.isEqual(node.value, value)) {
+                break;
+            }
+
+            node = node.next;
+        }
+
+        return node;
+    }
+
+    [_findNodeBefore](value) {
+        let node = this[_getStartLimiter]();
+
+        while (node) {
+            if (node.next && _.isEqual(value, node.next.value)) {
+                break;
+            }
+
+            node = node.next;
+        }
+
+        return node;
     }
 
     [_getStartLimiter]() {
