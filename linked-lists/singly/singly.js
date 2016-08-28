@@ -81,6 +81,20 @@ class SinglyLinkedList extends BaseLinkedList {
         return this;
     }
 
+    copyTo(linkedList) {
+        let node = this[_getLimiter]().next;
+        let currentTop = linkedList[_getLimiter]();
+
+        while (node) {
+            currentTop.next = new LinkedListItem(node.value);
+            currentTop = currentTop.next;
+
+            node = node.next;
+        }
+
+        return linkedList;
+    }
+
     [_findNode](value) {
         let node = this[_getLimiter]().next;
 

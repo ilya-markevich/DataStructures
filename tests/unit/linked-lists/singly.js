@@ -186,6 +186,18 @@ describe('Singly Linked List', () => {
         done();
     });
 
+    it('should copy current linkedList in new one', (done) => {
+        const valuesToAdd = data.valuesToAdd;
+        const newLinkedList = new SinglyLinkedList();
+
+        linkedList.copyTo(newLinkedList);
+
+        const expectedResult = [valuesToAdd[1], valuesToAdd[0], valuesToAdd[3], valuesToAdd[2]];
+        checkLinkedListContent(newLinkedList, expectedResult);
+
+        done();
+    });
+
     it('should clear linkedList', (done) => {
         linkedList.clear();
 
