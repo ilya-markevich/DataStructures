@@ -4,14 +4,14 @@ require('should');
 const _ = require('lodash');
 
 const generateTests = require('./testGenerator');
-const SinglyLinkedList = require('../../../linked-lists/singly/singly');
+const DoublyLinkedList = require('../../../linked-lists/doubly/doubly');
 
 const data = _.cloneDeep(require('./data/singly.json'));
 
-describe('Singly Linked List', () => {
+describe('Doubly Linked List', () => {
     generateTests({
-        name: 'Singly Linked List',
+        name: 'Doubly Linked List',
         data: data,
-        LinkedListConstructor: SinglyLinkedList
+        LinkedListConstructor: DoublyLinkedList
     });
 });

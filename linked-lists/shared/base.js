@@ -1,35 +1,29 @@
 'use strict';
 
+const _ = require('lodash');
+
 const symbols = require('../shared/symbols');
-const _limiter = symbols._limiter;
-const _getLimiter = symbols._getLimiter;
+const _startLimiter = symbols._startLimiter;
+const _getStartLimiter = symbols._getStartLimiter;
+const _findNode = symbols._findNode;
 
 class BaseLinkedList {
     constructor(LinkedListItem) {
-        this[_limiter] = new LinkedListItem();
+        this[_startLimiter] = new LinkedListItem();
     }
 
-    clear() {
-        const limiter = this[_getLimiter]();
-        limiter.next = null;
+    update(oldValue, newValue) {
+        const nodeToUpdate = this[_findNode](oldValue);
+
+        if (nodeToUpdate) {
+            nodeToUpdate.value = newValue;
+        }
 
         return this;
     }
 
-    toArray() {
-        let result = [];
-        let currentNode = this[_getLimiter]().next;
-
-        while (currentNode) {
-            result.push(currentNode.value);
-            currentNode = currentNode.next;
-        }
-
-        return result;
-    }
-
-    [_getLimiter]() {
-        return this[_limiter];
+    [_getStartLimiter]() {
+        return this[_startLimiter];
     }
 }
 

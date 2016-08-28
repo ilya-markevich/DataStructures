@@ -6,7 +6,7 @@ const BaseLinkedList = require('../shared/base');
 const LinkedListItem = require('./item');
 
 const symbols = require('./../shared/symbols');
-const _getLimiter = symbols._getLimiter;
+const _getStartLimiter = symbols._getStartLimiter;
 const _findNode = symbols._findNode;
 const _findNodeBefore = symbols._findNodeBefore;
 const _insertDefaultValues = symbols._insertDefaultValues;
@@ -19,7 +19,7 @@ class SinglyLinkedList extends BaseLinkedList {
     }
 
     addToTop(value) {
-        const limiter = this[_getLimiter]();
+        const limiter = this[_getStartLimiter]();
         const top = limiter.next;
 
         limiter.next = new LinkedListItem(value, top);
@@ -28,7 +28,7 @@ class SinglyLinkedList extends BaseLinkedList {
     }
 
     add(value) {
-        let lastElement = this[_getLimiter]();
+        let lastElement = this[_getStartLimiter]();
 
         while (lastElement.next) {
             lastElement = lastElement.next;
@@ -61,16 +61,6 @@ class SinglyLinkedList extends BaseLinkedList {
         return this;
     }
 
-    update(oldValue, newValue) {
-        const nodeToUpdate = this[_findNode](oldValue);
-
-        if (nodeToUpdate) {
-            nodeToUpdate.value = newValue;
-        }
-
-        return this;
-    }
-
     remove(value) {
         const beforeNodeToRemove = this[_findNodeBefore](value);
 
@@ -82,8 +72,8 @@ class SinglyLinkedList extends BaseLinkedList {
     }
 
     copyTo(linkedList) {
-        let node = this[_getLimiter]().next;
-        let currentTop = linkedList[_getLimiter]();
+        let node = this[_getStartLimiter]().next;
+        let currentTop = linkedList[_getStartLimiter]();
 
         while (node) {
             currentTop.next = new LinkedListItem(node.value);
@@ -95,8 +85,27 @@ class SinglyLinkedList extends BaseLinkedList {
         return linkedList;
     }
 
+    toArray() {
+        let result = [];
+        let currentNode = this[_getStartLimiter]().next;
+
+        while (currentNode) {
+            result.push(currentNode.value);
+            currentNode = currentNode.next;
+        }
+
+        return result;
+    }
+
+    clear() {
+        const limiter = this[_getStartLimiter]();
+        limiter.next = null;
+
+        return this;
+    }
+
     [_findNode](value) {
-        let node = this[_getLimiter]().next;
+        let node = this[_getStartLimiter]().next;
 
         while (node) {
             if (_.isEqual(node.value, value)) {
@@ -110,7 +119,7 @@ class SinglyLinkedList extends BaseLinkedList {
     }
 
     [_findNodeBefore](value) {
-        let node = this[_getLimiter]();
+        let node = this[_getStartLimiter]();
 
         while (node) {
             if (node.next && _.isEqual(value, node.next.value)) {
@@ -124,10 +133,10 @@ class SinglyLinkedList extends BaseLinkedList {
     }
 
     [_insertDefaultValues](values) {
-        const limiter = this[_getLimiter]();
+        const limiter = this[_getStartLimiter]();
 
         _.reduce(values, (prevNode, value) => {
-            let newNode = new LinkedListItem(value);
+            const newNode = new LinkedListItem(value);
             prevNode.next = newNode;
 
             return newNode;
