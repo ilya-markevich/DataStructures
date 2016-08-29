@@ -58,6 +58,15 @@ module.exports = function (opts) {
         done();
     });
 
+    it(`should contain first new value and not contains second new value in ${name}`, (done) => {
+        const valuesToAdd = data.valuesToAdd;
+
+        linkedList.contains(valuesToAdd[0]).should.be.eql(true);
+        linkedList.contains(valuesToAdd[1]).should.be.eql(false);
+
+        done();
+    });
+
     it(`should add second new value to the top of ${name}`, (done) => {
         const valuesToAdd = data.valuesToAdd;
         const secondValue = valuesToAdd[1];
@@ -190,6 +199,35 @@ module.exports = function (opts) {
 
         const expectedResult = [valuesToAdd[1], valuesToAdd[0], valuesToAdd[3], valuesToAdd[2]];
         checkLinkedListContent(newLinkedList, expectedResult);
+
+        done();
+    });
+
+    it(`should sort ${name} with default sort function`, (done) => {
+        const valuesToSort = data.valuesToDefaultSorting;
+        const linkedList = new LinkedListConstructor(valuesToSort);
+
+        linkedList.sort();
+
+        const expectedResult = valuesToSort.sort((value1, value2) => {
+            return value1 - value2;
+        });
+        checkLinkedListContent(linkedList, expectedResult);
+
+        done();
+    });
+
+    it(`should sort ${name} with custom sort function`, (done) => {
+        const valuesToSort = data.valuesToCustomSorting;
+        const linkedList = new LinkedListConstructor(valuesToSort);
+        const sortFunction = (value1, value2) => {
+            return value2.age - value1.age;
+        };
+
+        linkedList.sort(sortFunction);
+
+        const expectedResult = valuesToSort.sort(sortFunction);
+        checkLinkedListContent(linkedList, expectedResult);
 
         done();
     });

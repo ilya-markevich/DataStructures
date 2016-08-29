@@ -7,10 +7,15 @@ const _startLimiter = symbols._startLimiter;
 const _getStartLimiter = symbols._getStartLimiter;
 const _findNode = symbols._findNode;
 const _findNodeBefore = symbols._findNodeBefore;
+const _defaultSortFunction = symbols._defaultSortFunction;
 
 class BaseLinkedList {
     constructor(LinkedListItem) {
         this[_startLimiter] = new LinkedListItem();
+    }
+
+    contains(value) {
+        return !!this[_findNode](value);
     }
 
     update(oldValue, newValue) {
@@ -53,6 +58,10 @@ class BaseLinkedList {
 
     [_getStartLimiter]() {
         return this[_startLimiter];
+    }
+
+    [_defaultSortFunction](value1, value2) {
+        return value1 - value2;
     }
 }
 

@@ -11,6 +11,7 @@ const _endLimiter = symbols._endLimiter;
 const _getEndLimiter = symbols._getEndLimiter;
 const _findNode = symbols._findNode;
 const _insertDefaultValues = symbols._insertDefaultValues;
+const _defaultSortFunction = symbols._defaultSortFunction;
 
 class DoublyLinkedList extends BaseLinkedList {
     constructor(defaultValues) {
@@ -93,6 +94,35 @@ class DoublyLinkedList extends BaseLinkedList {
         }
 
         return linkedList;
+    }
+
+    sort(sortFunc) {
+        sortFunc = sortFunc || this[_defaultSortFunction];
+        let currentListNode = this[_getStartLimiter]().next;
+
+        const newLinkedList = new DoublyLinkedList();
+
+        while (currentListNode.next) {
+            let tempListNode = newLinkedList[_getStartLimiter]();
+            let tempEndLimiter = newLinkedList[_getEndLimiter]();
+
+            while (tempListNode.next !== tempEndLimiter) {
+                if (sortFunc(currentListNode.value, tempListNode.next.value) < 0) {
+                    break;
+                }
+
+                tempListNode = tempListNode.next;
+            }
+
+            const newNode = new LinkedListItem(currentListNode.value, tempListNode.next, tempListNode);
+            tempListNode.next.prev = newNode;
+            tempListNode.next = newNode;
+
+            currentListNode = currentListNode.next;
+        }
+
+        this.clear();
+        return newLinkedList.copyTo(this);
     }
 
     toArray() {

@@ -10,6 +10,7 @@ const _getStartLimiter = symbols._getStartLimiter;
 const _findNode = symbols._findNode;
 const _findNodeBefore = symbols._findNodeBefore;
 const _insertDefaultValues = symbols._insertDefaultValues;
+const _defaultSortFunction = symbols._defaultSortFunction;
 
 class SinglyLinkedList extends BaseLinkedList {
     constructor(defaultValues) {
@@ -82,6 +83,31 @@ class SinglyLinkedList extends BaseLinkedList {
         }
 
         return linkedList;
+    }
+
+    sort(sortFunc) {
+        sortFunc = sortFunc || this[_defaultSortFunction];
+        let currentListNode = this[_getStartLimiter]().next;
+
+        const newLinkedList = new SinglyLinkedList();
+
+        while (currentListNode) {
+            let tempListNode = newLinkedList[_getStartLimiter]();
+
+            while (tempListNode.next) {
+                if (sortFunc(currentListNode.value, tempListNode.next.value) < 0) {
+                    break;
+                }
+
+                tempListNode = tempListNode.next;
+            }
+
+            tempListNode.next = new LinkedListItem(currentListNode.value, tempListNode.next);
+            currentListNode = currentListNode.next;
+        }
+
+        this.clear();
+        return newLinkedList.copyTo(this);
     }
 
     toArray() {

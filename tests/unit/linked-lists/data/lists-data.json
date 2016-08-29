@@ -1,0 +1,37 @@
+{
+  "defaultValues": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "valuesToAdd": [
+    10,
+    true,
+    {
+      "name": "Ilya"
+    },
+    "test"
+  ],
+  "valuesToDefaultSorting": [
+    5,
+    2,
+    9,
+    15,
+    4
+  ],
+  "valuesToCustomSorting": [
+    {
+      "age": 10
+    },
+    {
+      "age": 5
+    },
+    {
+      "age": 15
+    },
+    {
+      "age": 12
+    }
+  ]
+}

@@ -7,5 +7,6 @@ module.exports = {
     _getEndLimiter: Symbol('getEndLimiter'),
     _findNode: Symbol('findNode'),
     _findNodeBefore: Symbol('findNodeBefore'),
-    _insertDefaultValues: Symbol('insertDefaultValues')
+    _insertDefaultValues: Symbol('insertDefaultValues'),
+    _defaultSortFunction: Symbol('defaultSortFunction')
 };
