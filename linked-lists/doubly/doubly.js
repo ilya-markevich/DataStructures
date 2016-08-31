@@ -5,7 +5,7 @@ const _ = require('lodash');
 const BaseLinkedList = require('../shared/base');
 const LinkedListItem = require('./item');
 
-const symbols = require('./../shared/symbols');
+const symbols = require('../shared/symbols');
 const _getStartLimiter = symbols._getStartLimiter;
 const _endLimiter = symbols._endLimiter;
 const _getEndLimiter = symbols._getEndLimiter;
