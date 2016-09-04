@@ -1,12 +1,12 @@
 'use strict';
 
-const DoublyLinkedList = require('../linked-lists/doubly/doubly');
+const DoublyLinkedList = require('../linked-list/doubly/doubly');
 
 const queueSymbols = require('./symbols');
 const _content = queueSymbols._content;
 const _getContent = queueSymbols._getContent;
 
-const linkedListSymbols = require('../linked-lists/shared/symbols');
+const linkedListSymbols = require('../linked-list/shared/symbols');
 const _getStartLimiter = linkedListSymbols._getStartLimiter;
 
 class Queue {

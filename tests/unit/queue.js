@@ -3,7 +3,7 @@
 require('should');
 const _ = require('lodash');
 
-const Queue = require('../../index').Queue;
+const Queue = require('../..').Queue;
 const data = _.cloneDeep(require('./data/queue.json'));
 
 const propsToCheck = [

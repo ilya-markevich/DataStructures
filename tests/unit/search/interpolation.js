@@ -3,7 +3,7 @@
 require('should');
 
 const data = require('../data/search.json');
-const interpolationSearch = require('../../../index').interpolationSearch;
+const interpolationSearch = require('../../..').searches.interpolationSearch;
 
 describe('Interpolation search', () => {
     it('should find element in integer array', (done) => {

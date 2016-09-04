@@ -1,12 +1,12 @@
 'use strict';
 
-const DoublyLinkedList = require('../linked-lists/doubly/doubly');
+const DoublyLinkedList = require('../linked-list/doubly/doubly');
 
 const stackSymbols = require('./symbols');
 const _content = stackSymbols._content;
 const _getContent = stackSymbols._getContent;
 
-const linkedListSymbols = require('../linked-lists/shared/symbols');
+const linkedListSymbols = require('../linked-list/shared/symbols');
 const _getEndLimiter = linkedListSymbols._getEndLimiter;
 
 class Stack {

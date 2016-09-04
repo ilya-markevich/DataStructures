@@ -3,7 +3,7 @@
 require('should');
 
 const data = require('../data/search.json');
-const linearSearch = require('../../../index').linearSearch;
+const linearSearch = require('../../..').searches.linearSearch;
 
 describe('Linear search', () => {
     it('should find element in integer array', (done) => {

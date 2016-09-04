@@ -3,7 +3,7 @@
 require('should');
 const _ = require('lodash');
 
-const Stack = require('../../index').Stack;
+const Stack = require('../..').Stack;
 const data = _.cloneDeep(require('./data/stack.json'));
 
 const propsToCheck = [
