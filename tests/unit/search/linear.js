@@ -29,7 +29,7 @@ describe('Linear search', () => {
         const array = data.integers.array;
 
         const result = linearSearch(array, data.integers.notExistedValue, {
-            isSorted: true
+            isSortedArray: true
         });
         result.should.be.eql(-1);
 
@@ -64,7 +64,7 @@ describe('Linear search', () => {
         const array = data.objects.array;
 
         const result = linearSearch(array, data.objects.notExistedValue, {
-            isSorted: true,
+            isSortedArray: true,
             compareFunction: objectsCompareFunction
         });
         result.should.be.eql(-1);
