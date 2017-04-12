@@ -3,8 +3,9 @@
 const isEqual = require('lodash.isequal');
 
 class BaseLinkedList {
-  constructor(LinkedListItem) {
-    this._startLimiter = new LinkedListItem();
+  constructor(LinkedListLimiter) {
+    this._startLimiter = new LinkedListLimiter();
+    this.LimiterClass = LinkedListLimiter;
   }
 
   contains(value) {
@@ -33,8 +34,10 @@ class BaseLinkedList {
   }
 
   _findNode(value) {
-    for (const node of this) {
-      if (isEqual(node.value, value)) {
+    const self = this;
+
+    for (const node of self) {
+      if (!self._isLimiter(node) && isEqual(node.value, value)) {
         return node;
       }
     }
@@ -43,13 +46,22 @@ class BaseLinkedList {
   }
 
   _findNodeBefore(value) {
-    for (const node of this) {
-      if (node.next && isEqual(value, node.next.value)) {
-        return node;
+    const self = this;
+    let node = self._top;
+
+    while (node) {
+      if (node.next && !self._isLimiter(node.next) && isEqual(value, node.next.value)) {
+        break;
       }
+
+      node = node.next;
     }
 
-    return null;
+    return node;
+  }
+
+  _isLimiter(node) {
+    return node instanceof this.LimiterClass;
   }
 
   get _top() {
@@ -61,9 +73,10 @@ class BaseLinkedList {
   }
 
   * [Symbol.iterator]() {
-    let node = this._top.next;
+    const self = this;
+    let node = self._top.next;
 
-    while (node) {
+    while (node && !self._isLimiter(node)) {
       yield node;
       node = node.next;
     }

@@ -2,8 +2,8 @@
 
 module.exports = {
   linkedLists: {
-    SinglyLinkedList: require('./src/linked-list/singly'),
-    DoublyLinkedList: require('./src/linked-list/doubly')
+    SinglyLinkedList: require('./src/linkedList/singly'),
+    DoublyLinkedList: require('./src/linkedList/doubly')
   },
   searches: require('./search'),
   sortings: require('./sorting'),

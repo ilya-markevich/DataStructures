@@ -1,11 +1,14 @@
 'use strict';
 
+/* eslint "no-empty": off */
+
 const BaseLinkedList = require('../base');
 const LinkedListItem = require('./item');
+const LinkedListLimiter = require('./limiter');
 
 class SinglyLinkedList extends BaseLinkedList {
   constructor(defaultValues) {
-    super(LinkedListItem);
+    super(LinkedListLimiter);
 
     this._insertDefaultValues(defaultValues);
   }
@@ -23,9 +26,7 @@ class SinglyLinkedList extends BaseLinkedList {
     const self = this;
     let node = self._top;
 
-    while (node.next) {
-      node = node.next;
-    }
+    for (node of self) { }
 
     node.next = new LinkedListItem(value);
     return self;
@@ -83,10 +84,12 @@ class SinglyLinkedList extends BaseLinkedList {
     for (const node of self) {
       let newListNode = newList._top;
 
-      for (newListNode of newList) {
-        if (sortPredicate(node.value, newListNode.value) < 0) {
+      while (newListNode.next) {
+        if (sortPredicate(node.value, newListNode.next.value) < 0) {
           break;
         }
+
+        newListNode = newListNode.next;
       }
 
       newListNode.next = new LinkedListItem(node.value, newListNode.next);

@@ -2,12 +2,13 @@
 
 const BaseLinkedList = require('../base');
 const LinkedListItem = require('./item');
+const LinkedListLimiter = require('./limiter');
 
 class DoublyLinkedList extends BaseLinkedList {
   constructor(defaultValues) {
-    super(LinkedListItem);
+    super(LinkedListLimiter);
 
-    this._endLimiter = new LinkedListItem(null, null, this._top);
+    this._endLimiter = new LinkedListLimiter(null, this._top);
     this._top.next = this._bottom;
 
     this._insertDefaultValues(defaultValues);
@@ -99,11 +100,14 @@ class DoublyLinkedList extends BaseLinkedList {
 
     for (const node of self) {
       let newListNode = newList._top;
+      const bottom = newList._bottom;
 
-      for (newListNode of newList) {
-        if (sortPredicate(node.value, newListNode.value) < 0) {
+      while (newListNode.next !== bottom) {
+        if (sortPredicate(node.value, newListNode.next.value) < 0) {
           break;
         }
+
+        newListNode = newListNode.next;
       }
 
       const newNode = new LinkedListItem(node.value, newListNode.next, newListNode);
