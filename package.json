@@ -22,8 +22,9 @@
   "homepage": "https://github.com/ilya-markevich/DataStructures#readme",
   "scripts": {
     "eslint": "eslint src/ index.js",
-    "test": "mocha --ui tdd --recursive tests",
+    "test": "mocha --ui tdd --recursive tests/unit",
     "cover": "nyc npm test",
+    "benchmark": "node tests/benchmarks/run.js",
     "precommit": "npm run eslint",
     "prepush": "npm run cover",
     "coveralls": "npm run cover && nyc report --reporter=text-lcov | coveralls"

@@ -1,10 +1,12 @@
 'use strict';
 
-const commonData = require('./data/common');
+const creator = require('./creator');
 
 []
-  .concat(require('./linkedList/singly')(commonData))
-  .concat(require('./linkedList/doubly')(commonData))
-  .forEach((test) => {
-    test.on('complete', commonData.onComplete).run();
+  .concat(require('./linkedList/singly'))
+  .concat(require('./linkedList/doubly'))
+  .map(testInit => testInit(creator))
+  .forEach((tests) => {
+    tests.forEach(test => test.run());
+    console.log('\n');
   });
