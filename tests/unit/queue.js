@@ -1,108 +1,85 @@
 'use strict';
 
 require('should');
-const _ = require('lodash');
 
-const Queue = require('../..').Queue;
-const data = _.cloneDeep(require('./data/queue.json'));
-
-const propsToCheck = [
-    '_content',
-    '_getContent'
-];
+const Queue = require('../../src/queue');
+const data = require('./data/queue.js');
 
 function checkQueueContent(queue, expectedValues) {
-    const queueArray = queue.toArray();
-    queueArray.should.be.eql(expectedValues);
+  queue.toArray().should.be.eql(expectedValues);
 }
 
 describe('Queue', () => {
-    it('should create empty queue', (done) => {
-        const queue = new Queue();
+  describe('Initial State', () => {
+    it('should create empty queue', () => {
+      const queue = new Queue();
 
-        queue.should.not.have.properties(propsToCheck);
-        checkQueueContent(queue, []);
-
-        done();
+      checkQueueContent(queue, []);
     });
 
-    it('should create queue with default values', (done) => {
-        const values = data.defaultValues;
-        const queue = new Queue(values);
+    it('should create queue with default values', () => {
+      const { defaultValues } = data;
+      const queue = new Queue(defaultValues);
 
-        queue.should.not.have.properties(propsToCheck);
-        checkQueueContent(queue, values);
+      checkQueueContent(queue, defaultValues);
+    });
+  });
 
-        done();
+  describe('#enqueue', () => {
+    it('should enqueue all values to queue', () => {
+      const { valuesToAdd } = data;
+      const queue = new Queue();
+
+      valuesToAdd.forEach((value) => {
+        queue.enqueue(value);
+      });
+
+      checkQueueContent(queue, valuesToAdd);
+    });
+  });
+
+  describe('#dequeue', () => {
+    it('should dequeue all values from queue', () => {
+      const { valuesToAdd } = data;
+      const queue = new Queue(valuesToAdd);
+
+      let dequeueIndex = 0;
+      let dequeueValue = queue.dequeue();
+
+      while (dequeueValue !== undefined) {
+        dequeueValue.should.be.eql(valuesToAdd[dequeueIndex]);
+        dequeueValue = queue.dequeue();
+
+        dequeueIndex++;
+      }
+    });
+  });
+
+  describe('#sort', () => {
+    it('should sort values in queue with default sort function', () => {
+      const { valuesToDefaultSorting, valuesToDefaultSortingAfterSorting } = data;
+      const newQueue = new Queue(valuesToDefaultSorting);
+
+      newQueue.sort();
+      checkQueueContent(newQueue, valuesToDefaultSortingAfterSorting);
     });
 
-    const queue = new Queue();
-    it('should enqueue all values to queue', (done) => {
-        const values = data.valuesToAdd;
+    it('should sort values in queue with custom sort function', () => {
+      const { customSortingFunction, valuesToCustomSorting, valuesToCustomSortingAfterSorting } = data;
+      const queue = new Queue(valuesToCustomSorting);
 
-        values.forEach((value) => {
-            queue.enqueue(value);
-        });
-
-        checkQueueContent(queue, values);
-
-        done();
+      queue.sort(customSortingFunction);
+      checkQueueContent(queue, valuesToCustomSortingAfterSorting);
     });
+  });
 
-    it('should dequeue all values from queue', (done) => {
-        const values = data.valuesToAdd;
+  describe('#clear', () => {
+    it('should clear queue', () => {
+      const { defaultValues } = data;
+      const queue = new Queue(defaultValues);
 
-        let dequeueIndex = 0;
-        let dequeueValue = queue.dequeue();
-
-        while (dequeueValue !== null) {
-            dequeueValue.should.be.eql(values[dequeueIndex]);
-            dequeueValue = queue.dequeue();
-
-            dequeueIndex++;
-        }
-
-        done();
+      queue.clear();
+      checkQueueContent(queue, []);
     });
-
-    it('should sort values in queue with default sort function', (done) => {
-        const values = data.valuesToDefaultSorting;
-        const newQueue = new Queue(values);
-
-        newQueue.sort();
-
-        const expectedResult = values.sort((value1, value2) => {
-            return value1 - value2;
-        });
-        checkQueueContent(newQueue, expectedResult);
-
-        done();
-    });
-
-    it('should sort values in queue with custom sort function', (done) => {
-        const values = data.valuesToCustomSorting;
-        const newQueue = new Queue(values);
-        const sortFunction = (value1, value2) => {
-            return value1.age - value2.age;
-        };
-
-        newQueue.sort(sortFunction);
-
-        const expectedResult = values.sort(sortFunction);
-        checkQueueContent(newQueue, expectedResult);
-
-        done();
-    });
-
-    it('should clear queue', (done) => {
-        const defaultValues = data.defaultValues;
-        const newQueue = new Queue(defaultValues);
-
-        newQueue.toArray().should.have.length(defaultValues.length);
-
-        newQueue.clear();
-        checkQueueContent(newQueue, []);
-
-        done();
-    });
+  });
 });

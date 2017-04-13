@@ -1,109 +1,85 @@
 'use strict';
 
 require('should');
-const _ = require('lodash');
 
-const Stack = require('../..').Stack;
-const data = _.cloneDeep(require('./data/stack.json'));
-
-const propsToCheck = [
-    '_content',
-    '_getContent'
-];
+const Stack = require('../../src/stack');
+const data = require('./data/stack');
 
 function checkStackContent(stack, expectedValues) {
-    const stackArray = stack.toArray();
-    stackArray.should.be.eql(expectedValues);
+  stack.toArray().should.be.eql(expectedValues);
 }
 
 describe('Stack', () => {
-    it('should create empty stack', (done) => {
-        const stack = new Stack();
+  describe('Initial State', () => {
+    it('should create empty stack', () => {
+      const stack = new Stack();
 
-        stack.should.not.have.properties(propsToCheck);
-        checkStackContent(stack, []);
-
-        done();
+      checkStackContent(stack, []);
     });
 
-    it('should create stack with default values', (done) => {
-        const values = _.cloneDeep(data.defaultValues);
-        const stack = new Stack(values);
+    it('should create stack with default values', () => {
+      const { defaultValues } = data;
+      const stack = new Stack(defaultValues);
 
-        stack.should.not.have.properties(propsToCheck);
-        checkStackContent(stack, values.reverse());
+      checkStackContent(stack, defaultValues);
+    });
+  });
 
-        done();
+  describe('#push', () => {
+    it('should push all values to stack', () => {
+      const { valuesToAdd } = data;
+      const stack = new Stack();
+
+      valuesToAdd.forEach((value) => {
+        stack.push(value);
+      });
+
+      checkStackContent(stack, valuesToAdd.reverse());
+    });
+  });
+
+  describe('#pop', () => {
+    it('should pop all values from stack', () => {
+      const { valuesToAdd } = data;
+      const stack = new Stack(valuesToAdd);
+
+      let popIndex = 0;
+      let popValue = stack.pop();
+
+      while (popValue !== undefined) {
+        popValue.should.be.eql(valuesToAdd[popIndex]);
+
+        popValue = stack.pop();
+        popIndex++;
+      }
+    });
+  });
+
+  describe('#sort', () => {
+    it('should sort values in stack with default sort function', () => {
+      const { valuesToDefaultSorting, valuesToDefaultSortingAfterSorting } = data;
+      const newStack = new Stack(valuesToDefaultSorting);
+
+      newStack.sort();
+      checkStackContent(newStack, valuesToDefaultSortingAfterSorting);
     });
 
-    const pushPopStack = new Stack();
-    it('should push all values to stack', (done) => {
-        const values = _.cloneDeep(data.valuesToAdd);
+    it('should sort values in stack with custom sort function', () => {
+      const { customSortingFunction, valuesToCustomSorting, valuesToCustomSortingAfterSorting } = data;
+      const newStack = new Stack(valuesToCustomSorting);
 
-        values.forEach((value) => {
-            pushPopStack.push(value);
-        });
-
-        const expectedResult = values.reverse();
-        checkStackContent(pushPopStack, expectedResult);
-
-        done();
+      newStack.sort(customSortingFunction);
+      checkStackContent(newStack, valuesToCustomSortingAfterSorting);
     });
+  });
 
-    it('should pop all values from stack', (done) => {
-        const values = _.cloneDeep(data.valuesToAdd).reverse();
+  describe('#clear', () => {
+    it('should clear stack', () => {
+      const { defaultValues } = data;
+      const newStack = new Stack(defaultValues);
 
-        let popIndex = 0;
-        let popValue = pushPopStack.pop();
-
-        while (popValue !== null) {
-            popValue.should.be.eql(values[popIndex]);
-            popValue = pushPopStack.pop();
-
-            popIndex++;
-        }
-
-        done();
+      newStack.clear();
+      checkStackContent(newStack, []);
     });
-
-    it('should sort values in stack with default sort function', (done) => {
-        const values = data.valuesToDefaultSorting;
-        const newStack = new Stack(values);
-
-        newStack.sort();
-
-        const expectedResult = values.sort((value1, value2) => {
-            return value1 - value2;
-        }).reverse();
-        checkStackContent(newStack, expectedResult);
-
-        done();
-    });
-
-    it('should sort values in stack with custom sort function', (done) => {
-        const values = data.valuesToCustomSorting;
-        const newStack = new Stack(values);
-        const sortFunction = (value1, value2) => {
-            return value1.age - value2.age;
-        };
-
-        newStack.sort(sortFunction);
-
-        const expectedResult = values.sort(sortFunction).reverse();
-        checkStackContent(newStack, expectedResult);
-
-        done();
-    });
-
-    it('should clear stack', (done) => {
-        const defaultValues = data.defaultValues;
-        const newStack = new Stack(defaultValues);
-
-        newStack.toArray().should.have.length(defaultValues.length);
-
-        newStack.clear();
-        checkStackContent(newStack, []);
-
-        done();
-    });
+  });
 });

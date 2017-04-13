@@ -1,7 +1,8 @@
 'use strict';
 
-const Benchmark = require('benchmark');
+/* eslint no-console: off */
 
+const Benchmark = require('benchmark');
 const maxTime = 3;
 
 function onComplete() {

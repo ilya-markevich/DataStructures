@@ -7,6 +7,6 @@ module.exports = {
   },
   searches: require('./search'),
   sortings: require('./sorting'),
-  Stack: require('./stack/stack'),
-  Queue: require('./queue/queue')
+  Stack: require('./src/stack'),
+  Queue: require('./src/queue')
 };
