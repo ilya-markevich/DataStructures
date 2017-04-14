@@ -8,6 +8,7 @@ const creator = require('./creator');
   .concat(require('./linkedList/singly'))
   .concat(require('./linkedList/doubly'))
   .concat(require('./stack'))
+  .concat(require('./queue'))
   .map(testInit => testInit(creator))
   .forEach((tests) => {
     tests.forEach(test => test.run());

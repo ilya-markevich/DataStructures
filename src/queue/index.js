@@ -17,9 +17,10 @@ class Queue {
   dequeue() {
     const self = this;
     const top = self._content._top;
+    const bottom = self._content._bottom;
     const nodeToReturn = top.next;
 
-    if (nodeToReturn && nodeToReturn !== top) {
+    if (nodeToReturn && nodeToReturn !== bottom) {
       nodeToReturn.prev.next = nodeToReturn.next;
       nodeToReturn.next.prev = nodeToReturn.prev;
 
