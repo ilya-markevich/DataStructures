@@ -5,17 +5,22 @@
 /* eslint no-magic-numbers: off */
 
 const insertionSort = require('../../../src/sorting/insertion');
+const selectionSort = require('../../../src/sorting/selection');
 
 const dataInsertion = {
   sort: insertionSort
+};
+const dataSelection = {
+  sort: selectionSort
 };
 
 function setup() {
   function generateArray(size) {
     const array = [];
+    const min = 0, max = 1000;
 
     for (let i = size - 1; i >= 0; i--) {
-      array.push(i);
+      array.push(Math.floor(Math.random() * (max - min)) + min);
     }
 
     return array;
@@ -55,6 +60,7 @@ function sort1000000Fn() {
 
 module.exports = {
   dataInsertion,
+  dataSelection,
   setup,
   sort10Fn,
   sort100Fn,
