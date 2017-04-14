@@ -2,34 +2,21 @@
 
 require('should');
 
-const _ = require('lodash');
-
-const insertionSort = require('../../../').sortings.insertionSort;
-const data = require('../data/sorting.json');
+const sort = require('../../../src/sorting/insertion');
+const data = require('../data/sorting');
 
 describe('Insertion sort', () => {
-    it('should sort integers array', (done) => {
-        const array = data.integers.array;
+  it('should sort array of integers', () => {
+    const { integers, integersSorted } = data;
 
-        const expectedResult = _.cloneDeep(array).sort((value1, value2) => value1 - value2);
-        const sortedArray = insertionSort(_.cloneDeep(array));
+    sort(integers).should.be.eql(integersSorted);
+  });
 
-        sortedArray.should.be.eql(expectedResult);
+  it('should sort array of objects', () => {
+    const { objects, objectsSorted, objectValueExtractor } = data;
 
-        done();
-    });
-
-    it('should sort objects array', (done) => {
-        const array = data.objects.array;
-        const extractor = value => value.age;
-
-        const sortedArray = insertionSort(_.cloneDeep(array), {
-            valueExtractor: extractor
-        });
-        const expectedResult = _.cloneDeep(array).sort((value1, value2) => extractor(value1) - extractor(value2));
-
-        sortedArray.should.be.eql(expectedResult);
-
-        done();
-    })
+    sort(objects, {
+      valueExtractor: objectValueExtractor
+    }).should.be.eql(objectsSorted);
+  });
 });

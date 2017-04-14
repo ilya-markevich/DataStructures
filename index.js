@@ -6,7 +6,9 @@ module.exports = {
     DoublyLinkedList: require('./src/linkedList/doubly')
   },
   searches: require('./search'),
-  sortings: require('./sorting'),
+  sortings: {
+    insertion: require('./src/sorting/insertion')
+  },
   Stack: require('./src/stack'),
   Queue: require('./src/queue')
 };
