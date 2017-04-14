@@ -6,12 +6,16 @@
 
 const insertionSort = require('../../../src/sorting/insertion');
 const selectionSort = require('../../../src/sorting/selection');
+const bubbleSort = require('../../../src/sorting/bubble');
 
 const dataInsertion = {
   sort: insertionSort
 };
 const dataSelection = {
   sort: selectionSort
+};
+const dataBubble = {
+  sort: bubbleSort
 };
 
 function setup() {
@@ -35,32 +39,33 @@ function setup() {
 }
 
 function sort10Fn() {
-  this.data.sort(array10);
+  this.data.sort(array10.slice(0));
 }
 
 function sort100Fn() {
-  this.data.sort(array100);
+  this.data.sort(array100.slice(0));
 }
 
 function sort1000Fn() {
-  this.data.sort(array1000);
+  this.data.sort(array1000.slice(0));
 }
 
 function sort10000Fn() {
-  this.data.sort(array10000);
+  this.data.sort(array10000.slice(0));
 }
 
 function sort100000Fn() {
-  this.data.sort(array100000);
+  this.data.sort(array100000.slice(0));
 }
 
 function sort1000000Fn() {
-  this.data.sort(array1000000);
+  this.data.sort(array1000000.slice(0));
 }
 
 module.exports = {
   dataInsertion,
   dataSelection,
+  dataBubble,
   setup,
   sort10Fn,
   sort100Fn,

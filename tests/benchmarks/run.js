@@ -11,6 +11,7 @@ const creator = require('./creator');
   .concat(require('./queue'))
   .concat(require('./sorting/insertion'))
   .concat(require('./sorting/selection'))
+  .concat(require('./sorting/bubble'))
   .map(testInit => testInit(creator))
   .forEach((tests) => {
     tests.forEach(test => test.run());
