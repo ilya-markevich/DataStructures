@@ -7,7 +7,10 @@ module.exports = {
   },
   searches: require('./search'),
   sortings: {
-    insertion: require('./src/sorting/insertion')
+    insertion: require('./src/sorting/insertion'),
+    selection: require('./src/sorting/selection'),
+    bubble: require('./src/sorting/bubble'),
+    heap: require('./src/sorting/heap')
   },
   Stack: require('./src/stack'),
   Queue: require('./src/queue')

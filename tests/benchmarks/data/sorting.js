@@ -7,6 +7,7 @@
 const insertionSort = require('../../../src/sorting/insertion');
 const selectionSort = require('../../../src/sorting/selection');
 const bubbleSort = require('../../../src/sorting/bubble');
+const heapSort = require('../../../src/sorting/heap');
 
 const dataInsertion = {
   sort: insertionSort
@@ -16,6 +17,9 @@ const dataSelection = {
 };
 const dataBubble = {
   sort: bubbleSort
+};
+const dataHeap = {
+  sort: heapSort
 };
 
 function setup() {
@@ -66,6 +70,7 @@ module.exports = {
   dataInsertion,
   dataSelection,
   dataBubble,
+  dataHeap,
   setup,
   sort10Fn,
   sort100Fn,
