@@ -3,6 +3,8 @@
 /* eslint no-magic-numbers: off */
 /* eslint func-style: off */
 
+const arrayWithOneElement = [1];
+
 const integers = [1, 12, 4, 2, 8, 1, 5];
 const integersSorted = [1, 1, 2, 4, 5, 8, 12];
 
@@ -53,12 +55,13 @@ const objectsSorted = [
   }
 ];
 
-const objectValueExtractor = value => value.age;
+const objectComparator = (value1, value2) => value1.age - value2.age;
 
 module.exports = {
+  arrayWithOneElement,
   integers,
   integersSorted,
   objects,
   objectsSorted,
-  objectValueExtractor
+  objectComparator
 };

@@ -1,22 +1,15 @@
 'use strict';
 
-const extractor = require('./helpers/valueExtractor');
-const compare = require('./helpers/comparator');
+const makeSort = require('./makeSort');
+const swap = require('./helpers/swap');
 
-function swap(array, i) {
-  const temp = array[i];
-
-  array[i] = array[i + 1];
-  array[i + 1] = temp;
-}
-
-function downToUp(array, { lowerBound, upperBound, valueExtractor }) {
+function downToUp(array, { lowerBound, upperBound, compare }) {
   let newUpperBound = 0;
   let newIsSorted = true;
 
   for (let i = lowerBound; i < upperBound; i++) {
-    if (compare(valueExtractor(array[i]), valueExtractor(array[i + 1])) > 0) {
-      swap(array, i);
+    if (compare(array[i], array[i + 1]) > 0) {
+      swap(array, i, i + 1);
 
       newUpperBound = i;
       newIsSorted = false;
@@ -29,13 +22,13 @@ function downToUp(array, { lowerBound, upperBound, valueExtractor }) {
   };
 }
 
-function upToDown(array, { lowerBound, upperBound, valueExtractor }) {
+function upToDown(array, { lowerBound, upperBound, compare }) {
   let newLowerBound = array.length;
   let newIsSorted = true;
 
   for (let i = upperBound; i > lowerBound; i--) {
-    if (compare(valueExtractor(array[i]), valueExtractor(array[i - 1])) < 0) {
-      swap(array, i - 1);
+    if (compare(array[i], array[i - 1]) < 0) {
+      swap(array, i, i - 1);
 
       newLowerBound = i;
       newIsSorted = false;
@@ -48,13 +41,7 @@ function upToDown(array, { lowerBound, upperBound, valueExtractor }) {
   };
 }
 
-module.exports = (array, opts = {}) => {
-  const valueExtractor = opts.valueExtractor || extractor;
-
-  if (!Array.isArray(array)) {
-    throw new Error('First parameter should be an array.');
-  }
-
+function bubbleSort(array, { compare }) {
   let isSorted = true;
   let isDownToUp = true;
 
@@ -62,7 +49,7 @@ module.exports = (array, opts = {}) => {
   let upperBound = array.length - 1;
 
   const checkOpts = {
-    valueExtractor
+    compare
   };
 
   do {
@@ -85,4 +72,8 @@ module.exports = (array, opts = {}) => {
   } while (!isSorted);
 
   return array;
+}
+
+module.exports = (array, opts) => {
+  return makeSort(array, bubbleSort, opts);
 };

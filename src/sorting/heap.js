@@ -3,80 +3,68 @@
 /* eslint no-magic-numbers: off */
 /* eslint no-constant-condition: off */
 
-const extractor = require('./helpers/valueExtractor');
+const makeSort = require('./makeSort');
+const swap = require('./helpers/swap');
 
-function makeHeap(array, valueExtractor) {
+function makeHeap(array, compare) {
   for (let i = 0; i < array.length; i++) {
     let index = i;
 
     while (index !== 0) {
       const parentIndex = Math.floor((index - 1) / 2);
 
-      if (valueExtractor(array[index]) <= valueExtractor(array[parentIndex])) {
+      if (compare(array[index], array[parentIndex]) <= 0) {
         break;
       }
 
-      const temp = array[index];
-
-      array[index] = array[parentIndex];
-      array[parentIndex] = temp;
-
+      swap(array, index, parentIndex);
       index = parentIndex;
     }
   }
 }
 
-function sort(array, valueExtractor) {
+function sort(array, compare) {
   for (let i = array.length - 1; i >= 0; i--) {
-    const temp = array[i];
-
-    array[i] = array[0];
-    array[0] = temp;
+    swap(array, i, 0);
 
     let index = 0;
 
     while (true) {
-      let child1 = (2 * index) + 1;
-      let child2 = (2 * index) + 2;
+      let child1Index = (2 * index) + 1;
+      let child2Index = (2 * index) + 2;
       let swapChildIndex;
 
-      if (child1 >= i) {
-        child1 = index;
+      if (child1Index >= i) {
+        child1Index = index;
       }
 
-      if (child2 >= i) {
-        child2 = index;
+      if (child2Index >= i) {
+        child2Index = index;
       }
 
-      if (valueExtractor(array[index]) >= valueExtractor(array[child1]) && valueExtractor(array[index]) >= valueExtractor(array[child2])) {
+      if (compare(array[index], array[child1Index]) >= 0 && compare(array[index], array[child2Index]) >= 0) {
         break;
       }
 
-      if (valueExtractor(array[child1]) > valueExtractor(array[child2])) {
-        swapChildIndex = child1;
+      if (compare(array[child1Index], array[child2Index]) > 0) {
+        swapChildIndex = child1Index;
       } else {
-        swapChildIndex = child2;
+        swapChildIndex = child2Index;
       }
 
-      const temp = array[index];
-
-      array[index] = array[swapChildIndex];
-      array[swapChildIndex] = temp;
-
+      swap(array, index, swapChildIndex);
       index = swapChildIndex;
     }
   }
 }
 
-module.exports = (array, opts = {}) => {
-  const valueExtractor = opts.valueExtractor || extractor;
-
-  if (!Array.isArray(array)) {
-    throw new Error('First parameter should be an array.');
-  }
-
-  makeHeap(array, valueExtractor);
-  sort(array, valueExtractor);
+function heapSort(array, { compare }) {
+  makeHeap(array, compare);
+  sort(array, compare);
 
   return array;
+}
+
+module.exports = (array, opts) => {
+  return makeSort(array, heapSort, opts);
 };
