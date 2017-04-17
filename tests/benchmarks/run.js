@@ -13,6 +13,7 @@ const creator = require('./creator');
   .concat(require('./sorting/selection'))
   .concat(require('./sorting/bubble'))
   .concat(require('./sorting/heap'))
+  .concat(require('./sorting/quick'))
   .map(testInit => testInit(creator))
   .forEach((tests) => {
     tests.forEach(test => test.run());
