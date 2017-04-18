@@ -15,6 +15,9 @@ const creator = require('./creator');
   .concat(require('./sorting/heap'))
   .concat(require('./sorting/quick'))
   .concat(require('./sorting/merge'))
+  .concat(require('./search/linear'))
+  .concat(require('./search/binary'))
+  .concat(require('./search/interpolation'))
   .map(testInit => testInit(creator))
   .forEach((tests) => {
     tests.forEach(test => test.run());
