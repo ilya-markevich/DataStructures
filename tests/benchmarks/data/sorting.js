@@ -9,6 +9,7 @@ const selectionSort = require('../../../src/sorting/selection');
 const bubbleSort = require('../../../src/sorting/bubble');
 const heapSort = require('../../../src/sorting/heap');
 const quickSort = require('../../../src/sorting/quick');
+const mergeSort = require('../../../src/sorting/merge');
 
 const dataInsertion = {
   sort: insertionSort
@@ -24,6 +25,9 @@ const dataHeap = {
 };
 const dataQuick = {
   sort: quickSort
+};
+const dataMerge = {
+  sort: mergeSort
 };
 
 function setup() {
@@ -76,6 +80,7 @@ module.exports = {
   dataBubble,
   dataHeap,
   dataQuick,
+  dataMerge,
   setup,
   sort10Fn,
   sort100Fn,
