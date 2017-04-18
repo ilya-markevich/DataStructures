@@ -4,6 +4,15 @@ const data = require('../data/search');
 
 module.exports = (name, search) => {
   describe(`${name} search`, () => {
+    it('should generate error because first parameter is not an array', () => {
+      try {
+        search(null);
+        throw new Error('Make search despite on incorrect parameter.');
+      } catch (err) {
+        err.should.have.property('message', 'First parameter should be an array.');
+      }
+    });
+
     it('should not find element in empty array', () => {
       const { emptyArray } = data;
 
