@@ -33,8 +33,8 @@ class DirectBinding {
 
     if (list) {
       for (const record of list) {
-        if (isEqual(record.key, key)) {
-          return record.value;
+        if (isEqual(record.value.key, key)) {
+          return record.value.value;
         }
       }
     }
@@ -42,6 +42,24 @@ class DirectBinding {
 
   contains(key) {
     return Boolean(this.get(key));
+  }
+
+  clear() {
+    const self = this;
+
+    for (let i = 0; i < self._size; i++) {
+      self._table[i] = undefined;
+    }
+  }
+
+  remove(key) {
+    const self = this;
+    const keyHash = self._makeHash(key);
+    const value = self.get(key);
+
+    if (value) {
+      self._table[keyHash].remove(self._makeRecord(key, value));
+    }
   }
 
   _makeRecord(key, value) {
