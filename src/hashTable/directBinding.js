@@ -4,14 +4,13 @@
 /* eslint no-bitwise: off */
 
 const isEqual = require('lodash.isequal');
+
+const BaseHashTable = require('./base');
 const SinglyLinkedList = require('../linkedList/singly');
 
-class DirectBinding {
+class DirectBinding extends BaseHashTable {
   constructor(size) {
-    const defaultSize = 20;
-
-    this._size = size || defaultSize;
-    this._table = new Array(this._size);
+    super(size);
   }
 
   set(key, value) {
@@ -40,18 +39,6 @@ class DirectBinding {
     }
   }
 
-  contains(key) {
-    return Boolean(this.get(key));
-  }
-
-  clear() {
-    const self = this;
-
-    for (let i = 0; i < self._size; i++) {
-      self._table[i] = undefined;
-    }
-  }
-
   remove(key) {
     const self = this;
     const keyHash = self._makeHash(key);
@@ -60,23 +47,6 @@ class DirectBinding {
     if (value) {
       self._table[keyHash].remove(self._makeRecord(key, value));
     }
-  }
-
-  _makeRecord(key, value) {
-    return {
-      key,
-      value
-    };
-  }
-
-  _makeHash(key) {
-    const hashValue = String(key).split('').reduce((a, b) => {
-      const k = ((a << 5) - a) + b.charCodeAt(0);
-
-      return k & k;
-    }, 0);
-
-    return hashValue % this._size;
   }
 }
 

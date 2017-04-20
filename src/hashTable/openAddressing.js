@@ -1,16 +1,12 @@
 'use strict';
 
-/* eslint no-magic-numbers: off */
-/* eslint no-bitwise: off */
-
+const BaseHashTable = require('./base');
 const isEqual = require('lodash.isequal');
 
-class OpenAddressing {
+class OpenAddressing extends BaseHashTable {
   constructor(size) {
-    const defaultSize = 20;
-
-    this._size = size || defaultSize;
-    this._table = new Array(this._size);
+    super(size);
+    this._emptyMarker = 1;
   }
 
   set(key, value) {
@@ -18,13 +14,9 @@ class OpenAddressing {
     const table = self._table;
     const keyHash = self._makeHash(key);
 
-    if (Boolean(table[keyHash]) === false) {
-      table[keyHash] = self._makeRecord(key, value);
-    }
-
-    for (let i = self._getNextIndex(keyHash); i && i !== keyHash; i = self._getNextIndex(i)) {
-      if (Boolean(table[i]) === false) {
-        table[i] = self._makeRecord(key, value);
+    for (const index of self._indexIteration(keyHash)) {
+      if (self._isEmptyItem(index)) {
+        table[index] = self._makeRecord(key, value);
         return true;
       }
     }
@@ -37,19 +29,17 @@ class OpenAddressing {
     const table = self._table;
     const keyHash = self._makeHash(key);
 
-    if (table[keyHash].key === key) {
-      return table[keyHash].value;
-    }
+    for (const index of self._indexIteration(keyHash)) {
+      const record = table[index];
 
-    for (let i = self._getNextIndex(keyHash); i && i !== keyHash; i = self._getNextIndex(i)) {
-      const record = table[i];
-
-      if (isEqual(record.key, key)) {
-        return record.value;
+      if (record) {
+        if (isEqual(record.key, key)) {
+          return record.value;
+        }
+      } else {
+        return undefined;
       }
     }
-
-    return undefined;
   }
 
   remove(key) {
@@ -57,50 +47,38 @@ class OpenAddressing {
     const table = self._table;
     const keyHash = self._makeHash(key);
 
-    if (table[keyHash].key === key) {
-      table[keyHash] = 1; // set 1 for removed records
-    }
+    for (const index of self._indexIteration(keyHash)) {
+      const record = table[index];
 
-    for (let i = self._getNextIndex(keyHash); i && i !== keyHash; i = self._getNextIndex(i)) {
-      const record = table[i];
-
-      if (isEqual(record.key, key)) {
-        table[i] = 1;
+      if (record) {
+        if (isEqual(record.key, key)) {
+          table[index] = self._emptyMarker;
+          break;
+        }
+      } else {
+        break;
       }
     }
   }
 
-  contains(key) {
-    return Boolean(this.get(key));
-  }
-
-  clear() {
+  * _indexIteration(startIndex) {
     const self = this;
 
-    for (let i = 0; i < self._size; i++) {
-      self._table[i] = undefined;
+    yield startIndex;
+
+    for (let i = self._getNextIndex(startIndex); Number.isInteger(i) && i !== startIndex; i = self._getNextIndex(i)) {
+      yield i;
     }
+  }
+
+  _isEmptyItem(index) {
+    const { _table, _emptyMarker } = this;
+
+    return _table[index] === _emptyMarker || Boolean(_table[index]) === false;
   }
 
   _getNextIndex(index) {
     return (index + 1) % this._size;
-  }
-
-  _makeRecord(key, value) {
-    return {
-      key,
-      value
-    };
-  }
-
-  _makeHash(key) {
-    const hashValue = String(key).split('').reduce((a, b) => {
-      const k = ((a << 5) - a) + b.charCodeAt(0);
-
-      return k & k;
-    }, 0);
-
-    return hashValue % this._size;
   }
 }
 
