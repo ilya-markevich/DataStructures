@@ -18,6 +18,8 @@ const creator = require('./creator');
   .concat(require('./search/linear'))
   .concat(require('./search/binary'))
   .concat(require('./search/interpolation'))
+  .concat(require('./hashTable/openAddressing'))
+  .concat(require('./hashTable/directBinding'))
   .map(testInit => testInit(creator))
   .forEach((tests) => {
     tests.forEach(test => test.run());

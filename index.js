@@ -18,6 +18,10 @@ module.exports = {
     quick: require('./src/sorting/quick'),
     merge: require('./src/sorting/merge')
   },
+  hashTables: {
+    openAddressing: require('./src/hashTable/openAddressing'),
+    directAddressing: require('./src/hashTable/directBinding')
+  },
   Stack: require('./src/stack'),
   Queue: require('./src/queue')
 };
