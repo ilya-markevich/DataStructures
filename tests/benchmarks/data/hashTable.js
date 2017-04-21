@@ -15,7 +15,7 @@ const dataOpenAddressing = {
 };
 
 function setup() {
-  const itemsCount = 1000000;
+  const itemsCount = 10000;
   const hashTable = new this.data.HashTable(itemsCount);
 
   for (let i = 0; i < itemsCount; i++) {
@@ -24,7 +24,7 @@ function setup() {
 }
 
 function setupWithTheSameKey() {
-  const itemsCount = 1000000;
+  const itemsCount = 10000;
   const hashTable = new this.data.HashTable(itemsCount);
 
   for (let i = 0; i < itemsCount; i++) {
@@ -33,16 +33,16 @@ function setupWithTheSameKey() {
 }
 
 function setupEmpty() {
-  const itemsCount = 1000000;
+  const itemsCount = 10000;
   const hashTable = new this.data.HashTable(itemsCount);
 }
 
 function getFn() {
-  hashTable.get(500000);
+  hashTable.get(5000);
 }
 
 function setFn() {
-  hashTable.set(500000);
+  hashTable.set(5000);
 }
 
 function removeFn() {
